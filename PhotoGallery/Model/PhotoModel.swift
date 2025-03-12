@@ -7,8 +7,29 @@
 
 import Foundation
 
-struct PhotoModel: Identifiable {
-    let id = UUID()
-    let url: URL
+
+struct PhotoModel {
+    
+    private(set) var photos: Array<Photo> = []
+    
+    init() {
+        for id in 1...15 {
+            self.photos.append(Photo(name: "image\(id)"))
+        }
+    }
+       
+    func Gallery() -> Array<Photo> {
+        return photos
+    }
+    
+    struct Photo {
+        let name: String
+    }
+    
+    func viewPhoto(name: String) {
+        print("Viewing photo with name: \(name)")
+    }
     
 }
+
+   
