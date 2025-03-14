@@ -3,33 +3,33 @@
 //  PhotoGallery
 //
 //  Created by Admin on 11/3/25.
-//
+
 
 import Foundation
 
+struct Photo: Hashable {
+    let url: URL
+}
 
 struct PhotoModel {
+    private(set) var photos: [Photo] = []
     
-    private(set) var photos: Array<Photo> = []
-    
-    init() {
-        for id in 1...15 {
-            self.photos.append(Photo(name: "image\(id)"))
+    init(_ urls: [URL]) {
+        self.photos = {() -> [Photo] in for url in urls {
+            photos.append(Photo(url: url))
         }
+            return photos
+        }()
     }
-       
-    func Gallery() -> Array<Photo> {
-        return photos
+
+    func viewPhoto() {
+      
     }
-    
-    struct Photo {
-        let name: String
-    }
-    
-    func viewPhoto(name: String) {
-        print("Viewing photo with name: \(name)")
-    }
-    
 }
+
+
+
+
+
 
    

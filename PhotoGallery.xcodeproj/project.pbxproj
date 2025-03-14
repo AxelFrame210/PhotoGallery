@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		84CC8D1D2D80963C00DB77CE /* PhotoGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		843A9DC62D833BA800815862 /* PhotoGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = PhotoGallery.app; path = "/Users/admin/Desktop/PhotoGallery/build/Debug-iphoneos/PhotoGallery.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,16 +33,7 @@
 			isa = PBXGroup;
 			children = (
 				84CC8D1F2D80963C00DB77CE /* PhotoGallery */,
-				84CC8D1E2D80963C00DB77CE /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		84CC8D1E2D80963C00DB77CE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				84CC8D1D2D80963C00DB77CE /* PhotoGallery.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -67,7 +58,7 @@
 			packageProductDependencies = (
 			);
 			productName = PhotoGallery;
-			productReference = 84CC8D1D2D80963C00DB77CE /* PhotoGallery.app */;
+			productReference = 843A9DC62D833BA800815862 /* PhotoGallery.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -95,7 +86,7 @@
 			mainGroup = 84CC8D142D80963C00DB77CE;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 84CC8D1E2D80963C00DB77CE /* Products */;
+			productRefGroup = 84CC8D142D80963C00DB77CE;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
