@@ -8,8 +8,10 @@
 import Foundation
 
 class PhotoGalleryViewModel: ObservableObject {
-    @Published private var photoModel = PhotoModel(urls)
-    private static var urls: [URL] = {
+    @Published private var photoModel = createPhotoModel(photos)
+    private static var photos: [Photo] = loadPhotos()
+    
+    static func loadPhotos() -> [Photo] {
         let imageExtensions = ["jpg", "jpeg", "png"]
         guard let bundlePath = Bundle.main.resourcePath else {
             print("Failed to get Bundle path")
@@ -22,13 +24,16 @@ class PhotoGalleryViewModel: ObservableObject {
                 let fileURL = URL(fileURLWithPath: bundlePath).appendingPathComponent(file)
                 return imageExtensions.contains(fileURL.pathExtension) ? fileURL : nil
             }
-            
-            return filteredURLs
+            return filteredURLs.map { Photo(url: $0) }
         } catch let error {
-            print(" Error loading files from the app bundle: \(error)")
+            print("\(error)")
             return []
         }
-    }()
+    }
+    
+    static func createPhotoModel(_ photos: [Photo]) -> PhotoModel {
+        return PhotoModel(photos)
+    }
     
     func getPhotos() -> [Photo] {
         return photoModel.photos

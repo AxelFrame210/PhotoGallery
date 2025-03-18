@@ -14,21 +14,14 @@ struct Photo: Hashable {
 struct PhotoModel {
     private(set) var photos: [Photo] = []
     
-    init(_ urls: [URL]) {
-        self.photos = {() -> [Photo] in for url in urls {
-            photos.append(Photo(url: url))
-        }
-            return photos
-        }()
+    init(_ photos: [Photo]) {
+        self.photos = photos
     }
 
     func viewPhoto() {
       
     }
 }
-
-
-
 
 
 

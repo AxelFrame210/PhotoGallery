@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PhotoGalleryView: View {
-    @ObservedObject var viewModel: PhotoGalleryViewModel
+    @ObservedObject var PhotoModel: PhotoGalleryViewModel
     
         var body: some View {
         VStack (alignment: .leading){
@@ -22,7 +22,7 @@ struct PhotoGalleryView: View {
             ScrollView{
                 let columns = [GridItem(.adaptive(minimum: 100), spacing: 8)]
                 LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(viewModel.getPhotos(), id: \.self) { photo in
+                    ForEach(PhotoModel.getPhotos(), id: \.self) { photo in
                         PhotoView(photo.url)
                                 .scaledToFill()
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
@@ -58,5 +58,5 @@ struct PhotoView: View {
 }
 
 #Preview {
-    PhotoGalleryView(viewModel: .init())
+    PhotoGalleryView(PhotoModel: .init())
 }
