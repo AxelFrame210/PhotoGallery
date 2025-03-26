@@ -34,7 +34,7 @@ struct PhotoDetailView: View {
     
     var dismissButton: some View {
         return Button(action: {
-            withAnimation(.smooth(duration: 0.3)) {
+            withAnimation(.smooth(duration: 0.2)) {
                 isViewingPhoto = false
             }
         }) {
