@@ -8,55 +8,49 @@
 import SwiftUI
 
 struct PhotoGalleryView: View {
-    @ObservedObject var PhotoModel: PhotoGalleryViewModel
-    
-        var body: some View {
-        VStack (alignment: .leading){
-            VStack() {
-                Text("Gallery")
-                    .foregroundStyle(.white)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-            }
-            
-            ScrollView{
-                let columns = [GridItem(.adaptive(minimum: 100), spacing: 8)]
-                LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(PhotoModel.getPhotos(), id: \.self) { photo in
-                        PhotoView(photo.url)
-                                .scaledToFill()
-                                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                                .aspectRatio(1, contentMode: .fit)
-                                .clipped()
-                                .cornerRadius(8)
-                    }
-                }
-            }
-        }
-        .padding()
-        .background(.black)
-    }
-}
-
-struct PhotoView: View {
-    let url: URL
-    
-    init(_ url: URL) {
-        self.url = url
-    }
+    @ObservedObject var photoModel: PhotoGalleryViewModel
     
     var body: some View {
-        if let uiImage = UIImage(contentsOfFile: url.path) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .scaledToFit()
-        } else {
-            Text("Failed to load image")
-                .foregroundStyle(.red)
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                VStack (alignment: .leading){
+                    if photoModel.isViewingPhoto == false {
+                        Text("Gallery")
+                            .foregroundStyle(.white)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        ScrollView{
+                            gridView
+                        }
+                    }
+                    else {
+                        if let photo = photoModel.photoToView {
+                            PhotoDetailView(photo, $photoModel.isViewingPhoto)
+                           }
+                    }
+                }
+                .safeAreaPadding(.top)
+                .safeAreaPadding(.horizontal)
+            }
+        }
+    
+    var gridView: some View {
+        let columns = [GridItem(.adaptive(minimum: 100), spacing: 8)]
+        return LazyVGrid(columns: columns, spacing: 8) {
+            ForEach(photoModel.getPhotos().indices, id: \.self) { index in
+                let photo = photoModel.getPhotos()[index]
+                PhotoView(photo)
+                    .onTapGesture {
+                        withAnimation(.smooth(duration: 0.3)) {
+                            photoModel.viewPhoto(photo)
+                        }
+                    }
+            }
         }
     }
 }
 
 #Preview {
-    PhotoGalleryView(PhotoModel: .init())
+    PhotoGalleryView(photoModel: .init())
 }

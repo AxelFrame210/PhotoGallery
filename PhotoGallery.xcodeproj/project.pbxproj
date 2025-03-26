@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		843A9DC62D833BA800815862 /* PhotoGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = PhotoGallery.app; path = "/Users/admin/Desktop/PhotoGallery/build/Debug-iphoneos/PhotoGallery.app"; sourceTree = "<absolute>"; };
+		8401AA0E2D8BCA200060DC6C /* PhotoGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,6 +33,7 @@
 			isa = PBXGroup;
 			children = (
 				84CC8D1F2D80963C00DB77CE /* PhotoGallery */,
+				8401AA0E2D8BCA200060DC6C /* PhotoGallery.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,7 +59,7 @@
 			packageProductDependencies = (
 			);
 			productName = PhotoGallery;
-			productReference = 843A9DC62D833BA800815862 /* PhotoGallery.app */;
+			productReference = 8401AA0E2D8BCA200060DC6C /* PhotoGallery.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

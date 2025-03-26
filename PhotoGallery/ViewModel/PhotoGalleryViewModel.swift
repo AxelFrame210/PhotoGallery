@@ -9,6 +9,8 @@ import Foundation
 
 class PhotoGalleryViewModel: ObservableObject {
     @Published private var photoModel = createPhotoModel(photos)
+    @Published var isViewingPhoto = false
+    @Published var photoToView: Photo?
     private static var photos: [Photo] = loadPhotos()
     
     static func loadPhotos() -> [Photo] {
@@ -39,7 +41,8 @@ class PhotoGalleryViewModel: ObservableObject {
         return photoModel.photos
     }
     
-    func viewPhoto() {
-        
+    func viewPhoto(_ photo: Photo) {
+        isViewingPhoto = true
+        photoToView = photo
     }
 }

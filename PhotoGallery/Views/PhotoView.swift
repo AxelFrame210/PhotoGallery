@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct PhotoView: View {
-    let url: URL
+    let photo: Photo
     
-    init(_ url: URL) {
-        self.url = url
+    init(_ photo: Photo) {
+        self.photo = photo
     }
     
     var body: some View {
-        if let uiImage = UIImage(contentsOfFile: url.path) {
+        if let uiImage = UIImage(contentsOfFile: photo.url.path) {
             
             Image(uiImage: uiImage)
                 .resizable()
@@ -27,3 +27,4 @@ struct PhotoView: View {
         }
     }
 }
+

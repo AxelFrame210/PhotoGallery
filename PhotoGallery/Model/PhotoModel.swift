@@ -9,6 +9,8 @@ import Foundation
 
 struct Photo: Hashable {
     let url: URL
+    var isBeingViewed = false
+    
 }
 
 struct PhotoModel {
@@ -18,11 +20,6 @@ struct PhotoModel {
         self.photos = photos
     }
 
-    func viewPhoto() {
-      
-    }
+    
 }
 
-
-
-   
