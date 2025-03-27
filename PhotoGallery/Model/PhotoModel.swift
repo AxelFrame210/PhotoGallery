@@ -7,19 +7,9 @@
 
 import Foundation
 
-struct Photo: Hashable {
+struct Photo: Hashable, Identifiable {
     let url: URL
-    var isBeingViewed = false
-    
+    let id: UUID = UUID()
 }
 
-struct PhotoModel {
-    private(set) var photos: [Photo] = []
-    
-    init(_ photos: [Photo]) {
-        self.photos = photos
-    }
-
-    
-}
 

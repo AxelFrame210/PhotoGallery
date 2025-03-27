@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct PhotoGalleryView: View {
-    @ObservedObject var photoModel: PhotoGalleryViewModel
+    @ObservedObject var photoGalleryVM: PhotoGalleryViewModel
     
     var body: some View {
             ZStack {
                 Color.black.ignoresSafeArea()
                 
                 VStack (alignment: .leading){
-                    if photoModel.isViewingPhoto == false {
+                    if photoGalleryVM.isViewingPhoto == false {
                         Text("Gallery")
                             .foregroundStyle(.white)
                             .font(.largeTitle)
@@ -25,8 +25,8 @@ struct PhotoGalleryView: View {
                         }
                     }
                     else {
-                        if let photo = photoModel.photoToView {
-                            PhotoDetailView(photo, $photoModel.isViewingPhoto)
+                        if let photo = photoGalleryVM.photoToView {
+                            PhotoDetailView(photo, $photoGalleryVM.isViewingPhoto)
                            }
                     }
                 }
@@ -38,12 +38,12 @@ struct PhotoGalleryView: View {
     var gridView: some View {
         let columns = [GridItem(.adaptive(minimum: 100), spacing: 8)]
         return LazyVGrid(columns: columns, spacing: 8) {
-            ForEach(photoModel.getPhotos().indices, id: \.self) { index in
-                let photo = photoModel.getPhotos()[index]
+            ForEach(photoGalleryVM.photos.indices, id: \.self) { index in
+                let photo = photoGalleryVM.photos[index]
                 PhotoView(photo)
                     .onTapGesture {
                         withAnimation(.smooth(duration: 0.3)) {
-                            photoModel.viewPhoto(photo)
+                            photoGalleryVM.viewPhoto(photo)
                         }
                     }
             }
@@ -52,5 +52,5 @@ struct PhotoGalleryView: View {
 }
 
 #Preview {
-    PhotoGalleryView(photoModel: .init())
+    PhotoGalleryView(photoGalleryVM: .init())
 }
