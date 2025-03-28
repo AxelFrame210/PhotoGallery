@@ -8,8 +8,6 @@
 import Foundation
 
 class PhotoGalleryViewModel: ObservableObject {
-    @Published var isViewingPhoto = false
-    @Published var photoToView: Photo?
     @Published var photos: [Photo] = []
     
     init() {
@@ -39,10 +37,5 @@ class PhotoGalleryViewModel: ObservableObject {
     
     func getPhotos() {
         self.photos = loadPhotos()
-    }
-    
-    func viewPhoto(_ photo: Photo) {
-        isViewingPhoto = true
-        self.photoToView = photo
     }
 }
