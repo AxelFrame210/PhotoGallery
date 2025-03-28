@@ -11,45 +11,37 @@ struct PhotoGalleryView: View {
     @ObservedObject var photoGalleryVM: PhotoGalleryViewModel
     
     var body: some View {
+        NavigationStack {
             ZStack {
                 Color.black.ignoresSafeArea()
                 
                 VStack (alignment: .leading){
-                    if photoGalleryVM.isViewingPhoto == false {
-                        Text("Gallery")
-                            .foregroundStyle(.white)
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        ScrollView{
-                            gridView
-                        }
-                    }
-                    else {
-                        if let photo = photoGalleryVM.photoToView {
-                            PhotoDetailView(photo, $photoGalleryVM.isViewingPhoto)
-                           }
+                    Text("Gallery")
+                        .foregroundStyle(.white)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                    ScrollView{
+                        gridView
                     }
                 }
                 .safeAreaPadding(.top)
                 .safeAreaPadding(.horizontal)
             }
         }
+    }
     
     var gridView: some View {
         let columns = [GridItem(.adaptive(minimum: 100), spacing: 8)]
         return LazyVGrid(columns: columns, spacing: 8) {
-            ForEach(photoGalleryVM.photos.indices, id: \.self) { index in
-                let photo = photoGalleryVM.photos[index]
-                PhotoView(photo)
-                    .onTapGesture {
-                        withAnimation(.smooth(duration: 0.3)) {
-                            photoGalleryVM.viewPhoto(photo)
-                        }
-                    }
+            ForEach(photoGalleryVM.photos, id: \.self) { photo in
+                NavigationLink(destination: PhotoDetailView(photo)) {
+                    PhotoView(photo)
+                }
             }
         }
     }
 }
+
 
 #Preview {
     PhotoGalleryView(photoGalleryVM: .init())

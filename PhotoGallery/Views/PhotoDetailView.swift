@@ -9,11 +9,9 @@ import SwiftUI
 
 struct PhotoDetailView: View {
     var photo: Photo
-    @Binding var isViewingPhoto: Bool
     
-    init(_ photo: Photo, _ isViewingPhoto: Binding<Bool>) {
+    init(_ photo: Photo) {
         self.photo = photo
-        self._isViewingPhoto = isViewingPhoto
     }
     
     var body: some View {
@@ -21,34 +19,14 @@ struct PhotoDetailView: View {
             Color.black.ignoresSafeArea()
             
             VStack {
-                HStack() {
-                    dismissButton
-                    Spacer()
-                }
-                
                 selectedPhoto
             }
             .safeAreaPadding(.vertical)
         }
     }
     
-    var dismissButton: some View {
-        return Button(action: {
-            withAnimation(.smooth(duration: 0.2)) {
-                isViewingPhoto = false
-            }
-        }) {
-            Image(systemName: "arrow.left")
-                .font(.title2)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding()
-        }
-    }
-    
     var selectedPhoto: some View {
         let uiImage = UIImage(contentsOfFile: photo.url.path)!
-        
         return GeometryReader { geometry in
             Image(uiImage: uiImage)
                 .resizable()
