@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PhotoGalleryView: View {
     @ObservedObject var photoGalleryVM: PhotoGalleryViewModel
-    
+
     var body: some View {
         NavigationStack {
             ZStack {
