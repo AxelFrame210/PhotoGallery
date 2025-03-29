@@ -28,8 +28,15 @@ struct PhotoDetailView: View {
             .safeAreaPadding(.vertical)
         }
     }
+    var tapMagnification: some Gesture {
+        TapGesture(count: 2)
+            .onEnded { _ in
+                scale = currentScale == 1 ? 2.5 : 1
+                currentScale = scale
+            }
+    }
     
-    var magnification: some Gesture {
+    var pinchMagnification: some Gesture {
         
         MagnifyGesture()
             .onChanged { state in
@@ -51,7 +58,8 @@ struct PhotoDetailView: View {
                 .scaledToFit()
                 .scaleEffect(scale)
                 .frame(width: geometry.size.width, height: geometry.size.height)
-                .gesture(magnification)
+                .gesture(tapMagnification)
+                .gesture(pinchMagnification)
         }
     }
 }
