@@ -28,6 +28,7 @@ struct PhotoDetailView: View {
             .safeAreaPadding(.vertical)
         }
     }
+    
     var tapMagnification: some Gesture {
         TapGesture(count: 2)
             .onEnded { _ in
@@ -37,11 +38,9 @@ struct PhotoDetailView: View {
     }
     
     var pinchMagnification: some Gesture {
-        
         MagnifyGesture()
             .onChanged { state in
                 scale = currentScale * state.magnification
-                
             }
             .onEnded { state in
                 scale = max(scale, minimumScale)
@@ -51,15 +50,26 @@ struct PhotoDetailView: View {
     }
     
     var selectedPhoto: some View {
-        let uiImage = UIImage(contentsOfFile: photo.url.path)!
         return GeometryReader { geometry in
-            Image(uiImage: uiImage)
-                .resizable()
-                .scaledToFit()
-                .scaleEffect(scale)
-                .frame(width: geometry.size.width, height: geometry.size.height)
-                .gesture(tapMagnification)
-                .gesture(pinchMagnification)
+         
+            AsyncImage(url: photo.urls.raw) { phase in
+                switch phase {
+                case .success(let image):
+                    image.resizable()
+                        .scaledToFit()
+                        .scaleEffect(scale)
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .gesture(tapMagnification)
+                        .gesture(pinchMagnification)
+                
+                case .failure:
+                    ProgressView()
+                case .empty:
+                    ProgressView()
+                @unknown default:
+                    EmptyView()
+                }
+            }
         }
     }
 }

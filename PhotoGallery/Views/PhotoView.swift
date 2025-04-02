@@ -15,15 +15,23 @@ struct PhotoView: View {
     }
     
     var body: some View {
-        if let uiImage = UIImage(contentsOfFile: photo.url.path) {
-            
-            Image(uiImage: uiImage)
-                .resizable()
-                .scaledToFill()
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                .aspectRatio(1, contentMode: .fit)
-                .clipped()
-                .cornerRadius(8)
+        AsyncImage(url: photo.urls.raw) { phase in
+            switch phase {
+            case .success(let image):
+                image.resizable()
+                    .scaledToFill()
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .aspectRatio(1, contentMode: .fit)
+                    .clipped()
+                    .cornerRadius(8)
+
+            case .failure:
+                ProgressView()
+            case .empty:
+                ProgressView()
+            @unknown default:
+                EmptyView()
+            }
         }
     }
 }
