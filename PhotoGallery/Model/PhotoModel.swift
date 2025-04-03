@@ -14,6 +14,7 @@ struct Photo: Hashable, Identifiable, Codable, Equatable {
 
 struct PhotoURLS: Codable, Equatable, Hashable {
     let raw: URL
+    let small: URL
+    let thumb: URL
     let regular: URL
-    let full: URL
 }

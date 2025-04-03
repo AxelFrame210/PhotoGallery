@@ -42,7 +42,6 @@ struct PhotoGalleryView: View {
     }
 }
 
-
 #Preview {
     PhotoGalleryView(photoGalleryVM: .init())
 }

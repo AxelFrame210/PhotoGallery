@@ -9,8 +9,21 @@ import Foundation
 
 class PhotoGalleryViewModel: ObservableObject {
     @Published var photos: [Photo] = []
+    private let session: URLSession
     
     init() {
+        let memoryCapacity = 4 * 1024 * 1024
+        let diskCapacity = 500 * 1024 * 1024
+        let urlCache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, directory: nil)
+        URLCache.shared = urlCache
+        
+        let config = URLSessionConfiguration.default
+        config.urlCache = urlCache
+        config.requestCachePolicy = .returnCacheDataElseLoad
+        config.timeoutIntervalForRequest = 5
+        
+        self.session = URLSession(configuration: config)
+        
         getPhotos()
     }
     
@@ -21,7 +34,7 @@ class PhotoGalleryViewModel: ObservableObject {
             throw ImageError.urlError
         }
         
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await session.data(from: url)
         
         // type downcasting from URLresponse to HTTPURLResponse
         // Check response

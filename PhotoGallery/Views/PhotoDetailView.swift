@@ -52,7 +52,7 @@ struct PhotoDetailView: View {
     var selectedPhoto: some View {
         return GeometryReader { geometry in
          
-            AsyncImage(url: photo.urls.raw) { phase in
+            AsyncImage(url: photo.urls.regular) { phase in
                 switch phase {
                 case .success(let image):
                     image.resizable()
