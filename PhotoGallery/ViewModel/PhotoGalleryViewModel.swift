@@ -27,8 +27,8 @@ class PhotoGalleryViewModel: ObservableObject {
         getPhotos()
     }
     
-    private func loadPhotos() async throws -> [Photo] {
-        let endpoint = "https://api.unsplash.com/photos?page=1&per_page=20&client_id=t7q1TcFc5gW33gFnwVBV626jorD2E4kRuK_YxRwuqKA"
+    private func loadPhotos(page: Int = 1, perPage: Int = 20) async throws -> [Photo] {
+        let endpoint = "https://api.unsplash.com/photos?page=\(page)&per_page=\(perPage)&client_id=t7q1TcFc5gW33gFnwVBV626jorD2E4kRuK_YxRwuqKA"
         
         guard let url = URL(string: endpoint) else {
             throw ImageError.urlError
@@ -36,8 +36,6 @@ class PhotoGalleryViewModel: ObservableObject {
         
         let (data, response) = try await session.data(from: url)
         
-        // type downcasting from URLresponse to HTTPURLResponse
-        // Check response
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 500
             throw ImageError.httpError(statusCode: statusCode)

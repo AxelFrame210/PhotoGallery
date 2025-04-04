@@ -26,14 +26,21 @@ struct PhotoView: View {
                     .cornerRadius(8)
 
             case .failure:
-                ProgressView()
+                CustomProgressview()
             case .empty:
-                ProgressView()
-
+                CustomProgressview()
             @unknown default:
                 EmptyView()
             }
         }
+    }
+}
+
+struct CustomProgressview: View {
+    var body: some View {
+        let rec = Rectangle().clipShape(RoundedRectangle(cornerRadius: 8))
+        rec.scaledToFill().frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .foregroundStyle(.gray)
     }
 }
 
