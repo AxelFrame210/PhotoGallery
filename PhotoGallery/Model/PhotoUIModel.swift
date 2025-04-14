@@ -1,5 +1,5 @@
 //
-//  PhotoModel.swift
+//  PhotoUIModel.swift
 //  PhotoGallery
 //
 //  Created by Admin on 11/3/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Photo: Hashable, Identifiable, Codable, Equatable {
+struct PhotoUIModel: Hashable, Identifiable, Codable, Equatable {
     let id: String
     let urls: PhotoURLS
 }
