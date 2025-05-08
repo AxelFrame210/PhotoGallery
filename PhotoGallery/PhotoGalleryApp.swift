@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct PhotoGalleryApp: App {
+    let dependencies: DependencyContainer = DependencyContainer()
+    
     var body: some Scene {
         WindowGroup {
-            PhotoGalleryView(photoGalleryVM: .init())
+            PhotoGalleryView(photoGalleryVM: dependencies.makePhotoGalleryViewModel())
         }
     }
 }

@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct PhotoResponseDTO: Codable {
+struct PhotoResponseDTO: Decodable {
     let id: String
     let urls: URLSDTO
     let user: AuthorDTO

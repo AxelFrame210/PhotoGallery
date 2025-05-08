@@ -9,20 +9,22 @@ import Foundation
 
 
 class PhotoGalleryViewModel: ObservableObject {
-    @Published var photos: [Photo] = []
     private let getPhotoUseCase: GetPhotoUseCase
-    
+   @Published var photos: [Photo] = []
     
     init(getPhotoUseCase: GetPhotoUseCase) {
         self.getPhotoUseCase = getPhotoUseCase
     }
-
-    func getPhotos() {
-        Task { @MainActor in
+    
+    @MainActor
+    func fetchtPhotos() {
+        Task {
             do {
-                photos = try await loadPhotos()
+            
+                let result = try await getPhotoUseCase.execute()
+                photos = Array(Set(result))
             } catch {
-                throw error
+                print(error)
             }
         }
     }

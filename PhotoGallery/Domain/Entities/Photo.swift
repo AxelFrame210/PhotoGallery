@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Photo: Codable {
-    let photoId : String
-    let photoUrl : URL
-    let authorName : String
-    let authorProfileUrl : URL
+struct Photo: Codable, Hashable {
+    let photoId: String
+    let photoUrl: URL
+    let authorName: String
+    let authorProfileUrl: URL
 }

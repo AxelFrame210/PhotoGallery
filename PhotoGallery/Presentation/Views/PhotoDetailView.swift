@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct PhotoDetailView: View {
-    private var photo: Photo
     @State private var scale: CGFloat = 1
     @State private var currentScale: CGFloat = 1
+    @State private var offset: CGSize = .zero
+    @State private var lastOffset: CGSize = .zero
+    
+    private var photo: Photo
     private var minimumScale: CGFloat = 1
     private var maximumScale: CGFloat = 5
     
@@ -48,11 +51,24 @@ struct PhotoDetailView: View {
                 currentScale = scale
             }
     }
+
+    var dragMagnification: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                offset = CGSize(
+                    width: lastOffset.width + value.translation.width,
+                    height: lastOffset.height + value.translation.height
+                )
+            }
+            .onEnded { _ in
+                lastOffset = offset
+            }
+    }
     
     var selectedPhoto: some View {
         return GeometryReader { geometry in
          
-            AsyncImage(url: photo.urls.regular) { phase in
+            AsyncImage(url: photo.photoUrl) { phase in
                 switch phase {
                 case .success(let image):
                     image.resizable()

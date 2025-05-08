@@ -15,7 +15,7 @@ struct PhotoView: View {
     }
     
     var body: some View {
-        AsyncImage(url: photo.urls.regular) { phase in
+        AsyncImage(url: photo.photoUrl) { phase in
             switch phase {
             case .success(let image):
                 image.resizable()

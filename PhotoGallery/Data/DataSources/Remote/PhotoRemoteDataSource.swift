@@ -10,18 +10,19 @@ class PhotoRemoteDataSource {
     private let apiKey = "t7q1TcFc5gW33gFnwVBV626jorD2E4kRuK_YxRwuqKA"
     private let baseURL = "https://api.unsplash.com/photos"
     
-    func getPhotos(atPage pageNumber: Int, perPage: Int) async throws -> [PhotoResponseDTO] {
-        let endpoint = "\(baseURL)?page=\(pageNumber)&per_page=\(perPage)&client_id=\(apiKey)"
+    func getPhotos() async throws -> [PhotoResponseDTO] {
+        let perPage = 20
+        let endpoint = "\(baseURL)?per_page=\(perPage)&client_id=\(apiKey)"
         
         guard let url = URL(string: endpoint) else {
-            throw ImageError.urlError
+            throw PhotoError.urlError
         }
         
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 500
-            throw ImageError.httpError(statusCode: statusCode)
+            throw PhotoError.httpError(statusCode: statusCode)
         }
         
         do {
@@ -30,12 +31,12 @@ class PhotoRemoteDataSource {
             let photos = try decoder.decode([PhotoResponseDTO].self, from: data)
             return photos
         } catch {
-            throw ImageError.decodingError
+            throw PhotoError.decodingError
         }
     }
 }
 
-enum ImageError: Error {
+enum PhotoError: Error {
     case urlError
     case decodingError
     case httpError(statusCode: Int)

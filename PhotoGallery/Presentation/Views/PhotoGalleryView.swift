@@ -26,6 +26,11 @@ struct PhotoGalleryView: View {
                 }
                 .safeAreaPadding(.top)
                 .safeAreaPadding(.horizontal)
+                .onAppear {
+                    if photoGalleryVM.photos.isEmpty {
+                        photoGalleryVM.fetchtPhotos()
+                    }
+                }
             }
         }
     }
@@ -33,15 +38,14 @@ struct PhotoGalleryView: View {
     var gridView: some View {
         let columns = [GridItem(.adaptive(minimum: 100), spacing: 8)]
         return LazyVGrid(columns: columns, spacing: 8) {
-            ForEach(photoGalleryVM.photos, id: \.self) { photo in
+            ForEach(photoGalleryVM.photos, id: \.photoId) { photo in
                 NavigationLink(destination: PhotoDetailView(photo)) {
                     PhotoView(photo)
                 }
+                .id(photo.photoId)
             }
         }
     }
 }
 
-#Preview {
-    PhotoGalleryView(photoGalleryVM: .init())
-}
+
