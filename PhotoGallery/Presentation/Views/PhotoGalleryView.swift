@@ -28,7 +28,7 @@ struct PhotoGalleryView: View {
                 .safeAreaPadding(.horizontal)
                 .onAppear {
                     if photoGalleryVM.photos.isEmpty {
-                        photoGalleryVM.fetchtPhotos()
+                        photoGalleryVM.fetchPhotos()
                     }
                 }
             }

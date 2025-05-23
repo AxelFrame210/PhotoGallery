@@ -67,7 +67,6 @@ struct PhotoDetailView: View {
     
     var selectedPhoto: some View {
         return GeometryReader { geometry in
-         
             AsyncImage(url: photo.photoUrl) { phase in
                 switch phase {
                 case .success(let image):
@@ -77,6 +76,7 @@ struct PhotoDetailView: View {
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .gesture(tapMagnification)
                         .gesture(pinchMagnification)
+                        .gesture(dragMagnification)
                 
                 case .failure:
                     ProgressView()

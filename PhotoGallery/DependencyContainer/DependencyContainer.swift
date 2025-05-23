@@ -23,8 +23,7 @@ class DependencyContainer {
     )
     
     // MARK: - ViewModel
-    
-    func makePhotoGalleryViewModel() -> PhotoGalleryViewModel {
+    @MainActor func makePhotoGalleryViewModel() -> PhotoGalleryViewModel {
         return PhotoGalleryViewModel(getPhotoUseCase: getPhotoUseCase)
     }
 }

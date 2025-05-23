@@ -41,3 +41,4 @@ enum PhotoError: Error {
     case decodingError
     case httpError(statusCode: Int)
 }
+

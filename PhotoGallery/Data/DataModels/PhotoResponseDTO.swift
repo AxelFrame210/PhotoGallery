@@ -8,32 +8,48 @@ import Foundation
 
 struct PhotoResponseDTO: Decodable {
     let id: String
-    let urls: URLSDTO
+    let imageUrls: URLSDTO
     let user: AuthorDTO
     let links: LinksDTO
     
-    struct URLSDTO: Codable {
-        let regular: URL
+    struct URLSDTO: Decodable {
+        let regularImage: URL
         let small: URL
         let thumb: URL
+        
+        enum CodingKeys: String, CodingKey {
+            case regularImage = "regular"
+            case small
+            case thumb
+        }
     }
     
-    struct AuthorDTO: Codable {
+    struct AuthorDTO: Decodable {
         let id: String
         let username: String
         let name: String
     }
     
-    struct LinksDTO: Codable {
+    struct LinksDTO: Decodable {
         let html: URL
     }
     
     func toDomain() -> Photo {
         return Photo(
             photoId: id,
-            photoUrl: urls.regular,
+            photoUrl: imageUrls.regularImage,
             authorName: user.name,
             authorProfileUrl: links.html
         )
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case imageUrls = "urls"
+        case user
+        case links
+        
+    }
 }
+
+
