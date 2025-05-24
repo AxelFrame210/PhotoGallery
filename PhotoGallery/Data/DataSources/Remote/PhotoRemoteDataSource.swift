@@ -5,6 +5,8 @@
 //  Created by Admin on 9/4/25.
 //
 import Foundation
+import SDWebImage
+import SDWebImageSwiftUI
 
 class PhotoRemoteDataSource {
     private let apiKey = "t7q1TcFc5gW33gFnwVBV626jorD2E4kRuK_YxRwuqKA"
@@ -13,6 +15,7 @@ class PhotoRemoteDataSource {
     func getPhotos() async throws -> [PhotoResponseDTO] {
         let perPage = 20
         let endpoint = "\(baseURL)?per_page=\(perPage)&client_id=\(apiKey)"
+         
         
         guard let url = URL(string: endpoint) else {
             throw PhotoError.urlError

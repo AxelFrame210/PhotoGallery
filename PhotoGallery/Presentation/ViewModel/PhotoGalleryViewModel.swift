@@ -10,18 +10,21 @@ import Foundation
 @MainActor
 class PhotoGalleryViewModel: ObservableObject {
     private let getPhotoUseCase: GetPhotoUseCase
+    
     @Published var photos: [Photo] = []
+    @Published var errorMessage: String? = nil
+    @Published var showErrorView = false
     
     init(getPhotoUseCase: GetPhotoUseCase) {
         self.getPhotoUseCase = getPhotoUseCase
     }
     
     func fetchPhotos() {
-        // weak self to prevent retain cycle()
+        // weak self to prevent retain cycle
         // Background queue for network calls
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { [weak self] in
+        DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
-        
+            
             Task {
                 do {
                     let results = try await self.getPhotoUseCase.execute()
@@ -29,12 +32,19 @@ class PhotoGalleryViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.photos = results
                     }
-                    
                 } catch {
-                    return
+                    // All property mutations must happen on main actor if marked
+                    await MainActor.run {
+                        self.didFailWithError(error)
+                        self.showErrorView = true
+                    }
                 }
             }
         }
+    }
+    
+    func didFailWithError(_ error: Error) {
+        self.errorMessage = "Failed to fetch photos: \(error)"
     }
 }
 

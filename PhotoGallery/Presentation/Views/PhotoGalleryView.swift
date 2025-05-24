@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PhotoGalleryView: View {
     @ObservedObject var photoGalleryVM: PhotoGalleryViewModel
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -20,8 +20,10 @@ struct PhotoGalleryView: View {
                         .foregroundStyle(.white)
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                    ScrollView{
-                        gridView
+                    if !photoGalleryVM.showErrorView {
+                        ScrollView{
+                            gridView
+                        }
                     }
                 }
                 .safeAreaPadding(.top)
@@ -30,6 +32,11 @@ struct PhotoGalleryView: View {
                     if photoGalleryVM.photos.isEmpty {
                         photoGalleryVM.fetchPhotos()
                     }
+                }
+                .alert("Error", isPresented: $photoGalleryVM.showErrorView) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text(photoGalleryVM.errorMessage ?? "An unknown error occurred.")
                 }
             }
         }
