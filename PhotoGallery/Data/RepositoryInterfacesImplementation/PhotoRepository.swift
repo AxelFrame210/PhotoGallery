@@ -10,34 +10,30 @@ class PhotoRepository: PhotoRepositoryProtocol {
     private let remoteDataSource: PhotoRemoteDataSource
     private let localDataSource: PhotoLocalDataSource
 
-    
     init (remoteDataSource: PhotoRemoteDataSource, localDataSource: PhotoLocalDataSource) {
         self.remoteDataSource = remoteDataSource
         self.localDataSource = localDataSource
     }
     
-    func getPhotos() async throws -> [Photo] {
-        let photoDTOArray = try await remoteDataSource.getPhotos()
+    func getFreshPhotos() async throws -> [Photo] {
+        let photoDTOArray = try await remoteDataSource.fetchPhotos()
     
         return photoDTOArray.map { photoDTO in photoDTO.toDomain() }
     }
     
-    func getCachedPhotos() async throws -> [Photo?] {
-        var cachedPhotos: [Photo?] = []
+    func getLocalPhotos() -> [Photo] {
+        var cachedPhotos: [Photo] = []
         
-        for photo in try localDataSource.getPhotos() {
-            cachedPhotos.append(photo?.toDomain())
+        for photo in localDataSource.getCachedPhotos() {
+            cachedPhotos.append(photo)
         }
         
         return cachedPhotos
     }
     
-    func savePhoto(_ photos: [Photo], at cachedTime: Date?) async throws {
-        try localDataSource.savePhotos(photos.map { PhotoLocal.fromDomain($0) }, at: cachedTime)
+    func cachePhotosToLocal(photos: [Photo]) throws {
+        try localDataSource.cachePhotos(photos: photos)
     }
     
-    func getCachedTime() async throws -> Date? {
-        return try localDataSource.getCachedTime()
-    }
 }
 

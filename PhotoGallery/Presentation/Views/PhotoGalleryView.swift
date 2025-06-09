@@ -24,6 +24,9 @@ struct PhotoGalleryView: View {
                         ScrollView{
                             gridView
                         }
+                        .refreshable {
+                           await photoGalleryVM.refresh()
+                        }
                     }
                 }
                 .safeAreaPadding(.top)
@@ -32,11 +35,6 @@ struct PhotoGalleryView: View {
                     if photoGalleryVM.photos.isEmpty {
                         photoGalleryVM.fetchPhotos()
                     }
-                }
-                .alert("Error", isPresented: $photoGalleryVM.showErrorView) {
-                    Button("OK", role: .cancel) { }
-                } message: {
-                    Text(photoGalleryVM.errorMessage ?? "An unknown error occurred.")
                 }
             }
         }
@@ -47,7 +45,7 @@ struct PhotoGalleryView: View {
         return LazyVGrid(columns: columns, spacing: 8) {
             ForEach(photoGalleryVM.photos, id: \.photoId) { photo in
                 NavigationLink(destination: PhotoDetailView(photo)) {
-                    PhotoView(photo)
+                    PhotoView(photo: photo)
                 }
                 .id(photo.photoId)
             }

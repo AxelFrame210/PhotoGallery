@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
+import SDWebImage
 
 struct PhotoDetailView: View {
     @State private var scale: CGFloat = 1
@@ -67,24 +69,14 @@ struct PhotoDetailView: View {
     
     var selectedPhoto: some View {
         return GeometryReader { geometry in
-            AsyncImage(url: photo.photoUrl) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable()
-                        .scaledToFit()
-                        .scaleEffect(scale)
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .gesture(tapMagnification)
-                        .gesture(pinchMagnification)
-                        .gesture(dragMagnification)
-                
-                case .failure:
-                    ProgressView()
-                case .empty:
-                    ProgressView()
-                @unknown default:
-                    EmptyView()
-                }
+            WebImage(url: photo.photoUrl) { image in
+                image.image?.resizable()
+                    .scaledToFit()
+                    .scaleEffect(scale)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .gesture(tapMagnification)
+                    .gesture(pinchMagnification)
+                    .gesture(dragMagnification)
             }
         }
     }

@@ -6,13 +6,11 @@
 //
 import Foundation
 
-
 protocol PhotoRepositoryProtocol {
-    func getPhotos() async throws -> [Photo]
+    func getFreshPhotos() async throws -> [Photo]
     
-    func getCachedPhotos() async throws -> [Photo?]
+    func getLocalPhotos() throws -> [Photo]
+
+    func cachePhotosToLocal( photos: [Photo]) throws
     
-    func savePhoto(_ photos: [Photo], at cachedTime: Date?) async throws
-    
-    func getCachedTime() async throws -> Date?
 }

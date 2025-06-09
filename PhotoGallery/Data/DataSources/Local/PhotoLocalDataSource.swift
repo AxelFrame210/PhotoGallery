@@ -6,33 +6,27 @@
 //
 
 import Foundation
+import SDWebImage
+import SDWebImageSwiftUI
 
 class PhotoLocalDataSource {
     private let userDefaults = UserDefaults.standard
-    private var cacheKeys: [String] = []
-
-    func getPhotos() throws -> [PhotoLocal?] {
-       return try cacheKeys.map { key in
-           guard let data = userDefaults.data(forKey: key) else { return nil }
-           
-           return try JSONDecoder().decode(PhotoLocal?.self, from: data)
-        }
-    }
     
-    func savePhotos(_ photos: [PhotoLocal], at cachedTime: Date?) throws {
-        // cache photos
-        for photo in photos {
-            cacheKeys.append("photo_\(photo.photoId)")
-            let data = try JSONEncoder().encode(photo)
-            userDefaults.set(data, forKey: "photo_\(photo.photoId)")
+    func getCachedPhotos() -> [Photo] {
+        if let data = userDefaults.data(forKey: "photos") {
+            if let photos = try? JSONDecoder().decode([Photo].self, from: data) {
+                return photos
+            }
         }
         
-        //cache time
-        userDefaults.set(cachedTime, forKey: "lastCachedTime")
+        return []
     }
     
-    func getCachedTime() throws -> Date? {
-        guard let cachedTime =  userDefaults.data(forKey: "lastCachedTime") else { return nil }
-        return try JSONDecoder().decode(Date?.self, from: cachedTime)
+    func cachePhotos(photos: [Photo]) throws {
+        userDefaults.set(try JSONEncoder().encode(photos), forKey: "photos")
     }
 }
+
+// Context: Save URLs to userDefaults to avoid extra netowork requests
+// WebImage downloads images and loads from cache auto
+// Why do I need to cache URL? I don't

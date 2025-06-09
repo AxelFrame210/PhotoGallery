@@ -6,32 +6,27 @@
 //
 
 import SwiftUI
+import SDWebImage
+import SDWebImageSwiftUI
 
 struct PhotoView: View {
     let photo: Photo
     
-    init(_ photo: Photo) {
-        self.photo = photo
-    }
-    
     var body: some View {
-        AsyncImage(url: photo.photoUrl) { phase in
-            switch phase {
-            case .success(let image):
-                image.resizable()
-                    .scaledToFill()
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                    .aspectRatio(1, contentMode: .fit)
-                    .clipped()
-                    .cornerRadius(8)
-
-            case .failure:
-                CustomProgressview()
-            case .empty:
-                CustomProgressview()
-            @unknown default:
-                EmptyView()
-            }
+        WebImage(url: photo.photoUrl) { image in
+            image.image?
+                .resizable()
+                .scaledToFill()
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .aspectRatio(1, contentMode: .fit)
+                .clipped()
+                .cornerRadius(8)
+        }
+        .onSuccess { _,_,_ in
+            
+        }
+        .onFailure { error in
+            print(error)
         }
     }
 }

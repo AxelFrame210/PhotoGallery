@@ -12,39 +12,37 @@ class PhotoGalleryViewModel: ObservableObject {
     private let getPhotoUseCase: GetPhotoUseCase
     
     @Published var photos: [Photo] = []
-    @Published var errorMessage: String? = nil
+    @Published var error: Error? = nil
     @Published var showErrorView = false
+    @Published var isRefreshing = false
     
     init(getPhotoUseCase: GetPhotoUseCase) {
         self.getPhotoUseCase = getPhotoUseCase
     }
     
     func fetchPhotos() {
-        // weak self to prevent retain cycle
-        // Background queue for network calls
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            
-            Task {
-                do {
-                    let results = try await self.getPhotoUseCase.execute()
-                    //Main queue for UI update
-                    DispatchQueue.main.async {
-                        self.photos = results
-                    }
-                } catch {
-                    // All property mutations must happen on main actor if marked
-                    await MainActor.run {
-                        self.didFailWithError(error)
-                        self.showErrorView = true
-                    }
+        //Checks object value preventing crash
+        //On background
+        DispatchQueue.global(qos: .default).async { [weak self] in
+            guard self != nil else { return }
+        }
+        
+        Task {
+            do {
+                let results = try await self.getPhotoUseCase.execute(forceFresh: isRefreshing)
+                await MainActor.run {
+                    self.photos = results
                 }
+            } catch {
+                print("Failed to fetch photos: \(error)")
             }
         }
     }
     
-    func didFailWithError(_ error: Error) {
-        self.errorMessage = "Failed to fetch photos: \(error)"
+    func refresh() async {
+        isRefreshing = true
+        fetchPhotos()
+        isRefreshing = false
     }
 }
 

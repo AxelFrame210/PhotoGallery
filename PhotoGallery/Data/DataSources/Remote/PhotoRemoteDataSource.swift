@@ -5,18 +5,15 @@
 //  Created by Admin on 9/4/25.
 //
 import Foundation
-import SDWebImage
-import SDWebImageSwiftUI
 
 class PhotoRemoteDataSource {
     private let apiKey = "t7q1TcFc5gW33gFnwVBV626jorD2E4kRuK_YxRwuqKA"
     private let baseURL = "https://api.unsplash.com/photos"
     
-    func getPhotos() async throws -> [PhotoResponseDTO] {
+    func fetchPhotos() async throws -> [PhotoResponseDTO] {
         let perPage = 20
         let endpoint = "\(baseURL)?per_page=\(perPage)&client_id=\(apiKey)"
          
-        
         guard let url = URL(string: endpoint) else {
             throw PhotoError.urlError
         }
