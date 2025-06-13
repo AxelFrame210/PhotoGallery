@@ -5,6 +5,7 @@
 //  Created by Admin on 14/4/25.
 //
 import Foundation
+import SDWebImageSwiftUI
 
 class PhotoRepository: PhotoRepositoryProtocol {
     private let remoteDataSource: PhotoRemoteDataSource
@@ -21,10 +22,10 @@ class PhotoRepository: PhotoRepositoryProtocol {
         return photoDTOArray.map { photoDTO in photoDTO.toDomain() }
     }
     
-    func getLocalPhotos() -> [Photo] {
+    func getLocalPhotos() throws -> [Photo] {
         var cachedPhotos: [Photo] = []
         
-        for photo in localDataSource.getCachedPhotos() {
+        for photo in try localDataSource.getCachedPhotos() {
             cachedPhotos.append(photo)
         }
         
@@ -35,5 +36,8 @@ class PhotoRepository: PhotoRepositoryProtocol {
         try localDataSource.cachePhotos(photos: photos)
     }
     
+    func addPhotoToFavorite(photo: Photo) throws {
+        
+    }
 }
 

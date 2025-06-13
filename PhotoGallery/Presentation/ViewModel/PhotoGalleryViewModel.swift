@@ -13,8 +13,8 @@ class PhotoGalleryViewModel: ObservableObject {
     
     @Published var photos: [Photo] = []
     @Published var error: Error? = nil
-    @Published var showErrorView = false
     @Published var isRefreshing = false
+    @Published var favoritePhotos: [Photo] = []
     
     init(getPhotoUseCase: GetPhotoUseCase) {
         self.getPhotoUseCase = getPhotoUseCase
@@ -43,6 +43,10 @@ class PhotoGalleryViewModel: ObservableObject {
         isRefreshing = true
         fetchPhotos()
         isRefreshing = false
+    }
+    
+    func saveToFavorites(_ photo: Photo) {
+        
     }
 }
 

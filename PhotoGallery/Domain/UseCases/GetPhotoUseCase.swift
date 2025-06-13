@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SDWebImageSwiftUI
 
 class GetPhotoUseCase {
     private let photoRepository: PhotoRepositoryProtocol
@@ -33,7 +32,7 @@ class GetPhotoUseCase {
         if let localPhotos = try? photoRepository.getLocalPhotos() {
             return localPhotos
         }
-      
+        
         return []
     }
     

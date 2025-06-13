@@ -9,48 +9,34 @@ import SwiftUI
 
 struct PhotoGalleryView: View {
     @ObservedObject var photoGalleryVM: PhotoGalleryViewModel
+    @State private var selection: GalleryTab = .home
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.black.ignoresSafeArea()
-                
-                VStack (alignment: .leading){
-                    Text("Gallery")
-                        .foregroundStyle(.white)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    if !photoGalleryVM.showErrorView {
-                        ScrollView{
-                            gridView
-                        }
-                        .refreshable {
-                           await photoGalleryVM.refresh()
-                        }
+        ZStack {
+            Color(.black)
+                .edgesIgnoringSafeArea(.all)
+            
+            NavigationStack {
+                TabView(selection: $selection) {
+                    Tab("Home", systemImage: "house.fill", value: .home) {
+                        HomeView()
+                            .toolbarBackground(.visible, for: .tabBar)
+                            .toolbarBackground(Color.black, for: .tabBar)
+                    }
+
+                    Tab("Favorite", systemImage: "star.fill", value: .favorite) {
+                        FavoritePhotosView()
+                            .toolbarBackground(.visible, for: .tabBar)
+                            .toolbarBackground(Color.black, for: .tabBar)
                     }
                 }
-                .safeAreaPadding(.top)
-                .safeAreaPadding(.horizontal)
-                .onAppear {
-                    if photoGalleryVM.photos.isEmpty {
-                        photoGalleryVM.fetchPhotos()
-                    }
-                }
-            }
+            }.environmentObject(photoGalleryVM)
         }
     }
-    
-    var gridView: some View {
-        let columns = [GridItem(.adaptive(minimum: 100), spacing: 8)]
-        return LazyVGrid(columns: columns, spacing: 8) {
-            ForEach(photoGalleryVM.photos, id: \.photoId) { photo in
-                NavigationLink(destination: PhotoDetailView(photo)) {
-                    PhotoView(photo: photo)
-                }
-                .id(photo.photoId)
-            }
-        }
+
+    enum GalleryTab {
+        case home
+        case favorite
     }
 }
-
 

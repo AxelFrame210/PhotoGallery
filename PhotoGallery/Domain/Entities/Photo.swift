@@ -12,4 +12,5 @@ struct Photo: Codable, Hashable {
     let photoUrl: URL
     let authorName: String
     let authorProfileUrl: URL
+    var isFavorite: Bool
 }

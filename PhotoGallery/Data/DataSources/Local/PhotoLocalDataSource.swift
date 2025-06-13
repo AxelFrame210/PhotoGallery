@@ -6,14 +6,14 @@
 //
 
 import Foundation
-import SDWebImage
-import SDWebImageSwiftUI
 
 class PhotoLocalDataSource {
     private let userDefaults = UserDefaults.standard
+    private let cachedKey = "cachedPhotos"
+    private let favoriteKey = "favoritePhotos"
     
-    func getCachedPhotos() -> [Photo] {
-        if let data = userDefaults.data(forKey: "photos") {
+    func getCachedPhotos() throws -> [Photo] {
+        if let data = userDefaults.data(forKey: cachedKey) {
             if let photos = try? JSONDecoder().decode([Photo].self, from: data) {
                 return photos
             }
@@ -21,9 +21,21 @@ class PhotoLocalDataSource {
         
         return []
     }
-    
+     
     func cachePhotos(photos: [Photo]) throws {
-        userDefaults.set(try JSONEncoder().encode(photos), forKey: "photos")
+        userDefaults.set(try JSONEncoder().encode(photos), forKey: cachedKey)
+    }
+    
+    func saveFavorite(photoID: String) throws {
+        
+    }
+    
+    func removeFavorite(photoID: String) throws {
+        
+    }
+    
+    func getFavoritePhotos() throws -> [Photo] {
+        return []
     }
 }
 

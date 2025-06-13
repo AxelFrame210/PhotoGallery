@@ -13,4 +13,5 @@ protocol PhotoRepositoryProtocol {
 
     func cachePhotosToLocal( photos: [Photo]) throws
     
+    func addPhotoToFavorite(photo: Photo) throws
 }
