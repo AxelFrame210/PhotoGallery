@@ -11,13 +11,15 @@ struct PhotoLocal: Codable {
     let photoUrl : URL
     let authorName : String
     let authorProfileUrl : URL
+    let isFavorite : Bool
    
     func toDomain() -> Photo {
         return Photo(
             photoId: photoId,
             photoUrl: photoUrl,
             authorName: authorName,
-            authorProfileUrl: authorProfileUrl
+            authorProfileUrl: authorProfileUrl,
+            isFavorite: isFavorite
         )
     }
     
@@ -27,6 +29,7 @@ struct PhotoLocal: Codable {
             photoUrl: domain.photoUrl,
             authorName: domain.authorName,
             authorProfileUrl: domain.authorProfileUrl
+            ,isFavorite: domain.isFavorite
         )
     }
 }

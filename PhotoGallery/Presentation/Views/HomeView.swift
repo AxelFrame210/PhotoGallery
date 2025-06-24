@@ -18,7 +18,7 @@ struct HomeView: View {
                 .fontWeight(.bold)
             
             ScrollView{
-                gridView
+                GridView(photoList: photoGalleryVM.photos)
             }
             .refreshable {
                 await photoGalleryVM.refresh()
@@ -29,19 +29,8 @@ struct HomeView: View {
         .safeAreaPadding(.top)
         .safeAreaPadding(.horizontal)
         .onAppear {
-            if photoGalleryVM.photos.isEmpty {
-                photoGalleryVM.fetchPhotos()
-            }
-        }
-    }
-    
-    var gridView: some View {
-        let columns = [GridItem(.adaptive(minimum: 100), spacing: 8)]
-        return LazyVGrid(columns: columns, spacing: 8) {
-            ForEach(photoGalleryVM.photos, id: \.photoId) { photo in
-                NavigationLink(destination: PhotoDetailView(photo)) {
-                    PhotoView(photo: photo)
-                }.id(photo.photoId)
+            if self.photoGalleryVM.photos.isEmpty {
+                self.photoGalleryVM.fetchPhotos()
             }
         }
     }

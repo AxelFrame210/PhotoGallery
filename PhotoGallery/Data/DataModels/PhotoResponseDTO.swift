@@ -39,7 +39,8 @@ struct PhotoResponseDTO: Decodable {
             photoId: id,
             photoUrl: imageUrls.regularImage,
             authorName: user.name,
-            authorProfileUrl: links.html
+            authorProfileUrl: links.html,
+            isFavorite: false
         )
     }
     
@@ -48,7 +49,6 @@ struct PhotoResponseDTO: Decodable {
         case imageUrls = "urls"
         case user
         case links
-        
     }
 }
 

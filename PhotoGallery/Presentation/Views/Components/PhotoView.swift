@@ -31,11 +31,11 @@ struct PhotoView: View {
     }
 }
 
-struct CustomProgressview: View {
-    var body: some View {
-        let rec = Rectangle().clipShape(RoundedRectangle(cornerRadius: 8))
-        rec.scaledToFill().frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            .foregroundStyle(.gray)
-    }
-}
+//struct CustomProgressview: View {
+//    var body: some View {
+//        let rec = Rectangle().clipShape(RoundedRectangle(cornerRadius: 8))
+//        rec.scaledToFill().frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+//            .foregroundStyle(.gray)
+//    }
+//}
 

@@ -16,12 +16,12 @@ struct PhotoDetailView: View {
     @State private var offset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
     
-    private var photo: Photo
+    private var photoId: String
     private var minimumScale: CGFloat = 1
     private var maximumScale: CGFloat = 5
     
-    init(_ photo: Photo) {
-        self.photo = photo
+    init(_ photoId: String) {
+        self.photoId = photoId
     }
     
     var body: some View {
@@ -56,7 +56,7 @@ struct PhotoDetailView: View {
             }
     }
 
-    var dragMagnification: some Gesture {
+   public var dragMagnification: some Gesture {
         DragGesture()
             .onChanged { value in
                 offset = CGSize(
@@ -71,30 +71,48 @@ struct PhotoDetailView: View {
     
     var selectedPhoto: some View {
         ZStack {
-            GeometryReader { geometry in
-                WebImage(url: photo.photoUrl) { image in
-                    image.image?.resizable()
-                        .scaledToFit()
-                        .scaleEffect(scale)
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .gesture(tapMagnification)
-                        .gesture(pinchMagnification)
-                        .gesture(dragMagnification)
-                }.overlay(alignment: .topTrailing) {
-                    Button(action: { photoGalleryVM.saveToFavorites(self.photo) }) {
-                        Image(systemName: photo.isFavorite ? "star.fill" : "star")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .aspectRatio(contentMode: .fill)
+            if let photo = photoGalleryVM.photos.first(where: { $0.photoId == self.photoId}) {
+                GeometryReader { geometry in
+                    WebImage(url: photo.photoUrl) { image in
+                        image.image?.resizable()
                             .scaledToFit()
-                            .font(.system(size: 20))
-                            .foregroundColor(.yellow)
-                            .clipShape(Circle())
+                            .scaleEffect(scale)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .applyGestures(tapMagnification, pinchMagnification, dragMagnification)
+                           
+                    }.favoriteOverlay(isFavorite: photo.isFavorite, action: { photoGalleryVM.togglePhotoFavorite(self.photoId)
+                        print(photo.isFavorite)
                     }
+                        
+                    )
                 }
             }
             
         }
     }
 }
+
+extension View {
+    func applyGestures(_ tapMagnification: some Gesture, _ pinchMagnification: some Gesture, _ dragMagnification: some Gesture) -> some View {
+        self.gesture(tapMagnification)
+            .gesture(pinchMagnification)
+            .gesture(dragMagnification)
+    }
+}
+
+extension View {
+    func favoriteOverlay(isFavorite: Bool, action: @escaping () -> Void) -> some View {
+        self.overlay(alignment: .topTrailing) {
+            Button(action: action) {
+                Image(systemName: isFavorite ? "star.fill" : "star")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(.yellow)
+                    .padding(8)
+            }
+        }
+    }
+}
+
 

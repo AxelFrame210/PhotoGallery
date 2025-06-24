@@ -22,8 +22,12 @@ class DependencyContainer {
         photoRepository: photoRepository
     )
     
+    lazy var toggleFavoriteUseCase = ToggleFavoriteUseCase(
+        photoRepository: photoRepository
+    )
+    
     // MARK: - ViewModel
     @MainActor func makePhotoGalleryViewModel() -> PhotoGalleryViewModel {
-        return PhotoGalleryViewModel(getPhotoUseCase: getPhotoUseCase)
+        return PhotoGalleryViewModel(getPhotoUseCase: getPhotoUseCase, toggleFavoriteUseCase: toggleFavoriteUseCase)
     }
 }

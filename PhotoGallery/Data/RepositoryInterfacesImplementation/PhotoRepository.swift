@@ -36,8 +36,8 @@ class PhotoRepository: PhotoRepositoryProtocol {
         try localDataSource.cachePhotos(photos: photos)
     }
     
-    func addPhotoToFavorite(photo: Photo) throws {
-        
+    func toggleFavorite(for photoID: String) throws {
+        try localDataSource.toggleFavorite(photoID: photoID)
     }
 }
 

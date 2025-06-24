@@ -10,7 +10,6 @@ import Foundation
 class PhotoLocalDataSource {
     private let userDefaults = UserDefaults.standard
     private let cachedKey = "cachedPhotos"
-    private let favoriteKey = "favoritePhotos"
     
     func getCachedPhotos() throws -> [Photo] {
         if let data = userDefaults.data(forKey: cachedKey) {
@@ -26,16 +25,13 @@ class PhotoLocalDataSource {
         userDefaults.set(try JSONEncoder().encode(photos), forKey: cachedKey)
     }
     
-    func saveFavorite(photoID: String) throws {
-        
-    }
-    
-    func removeFavorite(photoID: String) throws {
-        
-    }
-    
-    func getFavoritePhotos() throws -> [Photo] {
-        return []
+    func toggleFavorite(photoID: String) throws {
+        var photos = try getCachedPhotos()
+
+        if let index = photos.firstIndex(where: { $0.photoId == photoID }) {
+            photos[index].isFavorite.toggle()
+            try cachePhotos(photos: photos)
+        }
     }
 }
 

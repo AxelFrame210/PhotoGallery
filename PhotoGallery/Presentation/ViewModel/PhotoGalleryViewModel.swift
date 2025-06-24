@@ -10,14 +10,16 @@ import Foundation
 @MainActor
 class PhotoGalleryViewModel: ObservableObject {
     private let getPhotoUseCase: GetPhotoUseCase
+    private let toggleFavoriteUseCase: ToggleFavoriteUseCase
     
     @Published var photos: [Photo] = []
     @Published var error: Error? = nil
-    @Published var isRefreshing = false
+    @Published var isRefreshing = true
     @Published var favoritePhotos: [Photo] = []
     
-    init(getPhotoUseCase: GetPhotoUseCase) {
+    init(getPhotoUseCase: GetPhotoUseCase, toggleFavoriteUseCase: ToggleFavoriteUseCase) {
         self.getPhotoUseCase = getPhotoUseCase
+        self.toggleFavoriteUseCase = toggleFavoriteUseCase
     }
     
     func fetchPhotos() {
@@ -45,17 +47,26 @@ class PhotoGalleryViewModel: ObservableObject {
         isRefreshing = false
     }
     
-    func saveToFavorites(_ photo: Photo) {
-        
+    func togglePhotoFavorite(_ photoID: String) {
+        do {
+               try toggleFavoriteUseCase.toggleFavorite(for: photoID)
+               
+               // Update in-memory copy so UI reacts
+               if let index = photos.firstIndex(where: { $0.photoId == photoID }) {
+                   photos[index].isFavorite.toggle()
+               }
+           } catch {
+               print("Toggle favorite failed: \(error)")
+           }
+    }
+    
+    func getFavoritePhotos() {
+        if photos.isEmpty == false {
+            self.favoritePhotos = photos.filter{ $0.isFavorite == true }
+            
+            print("Get Favs")
+        }
     }
 }
 
-// State Obejct vs Observered Object? Can StateObject replace ObservedObject - 
-// Swift Package Manager
-// SDWebImage
-// Favorite Photos Tab: Local Folder, Local Database
-
-// DispatchQueue, weak self, strong self, Multithreading - In Progress
-// Combine: Alt for async/await
-// Error Handling
 
