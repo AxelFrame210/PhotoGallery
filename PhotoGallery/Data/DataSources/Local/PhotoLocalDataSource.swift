@@ -35,6 +35,3 @@ class PhotoLocalDataSource {
     }
 }
 
-// Context: Save URLs to userDefaults to avoid extra netowork requests
-// WebImage downloads images and loads from cache auto
-// Why do I need to cache URL? I don't

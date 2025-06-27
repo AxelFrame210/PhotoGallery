@@ -26,8 +26,7 @@ struct HomeView: View {
             }
         }
         .background(Color(.black))
-        .safeAreaPadding(.top)
-        .safeAreaPadding(.horizontal)
+        .safeAreaPadding()
         .onAppear {
             if self.photoGalleryVM.photos.isEmpty {
                 self.photoGalleryVM.fetchPhotos()

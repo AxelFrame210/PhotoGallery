@@ -26,7 +26,6 @@ struct FavoritePhotosView: View {
         .safeAreaPadding(.horizontal)
         .onAppear {
                 photoGalleryVM.getFavoritePhotos()
-            print(photoGalleryVM.favoritePhotos)
         }
     }
 }
